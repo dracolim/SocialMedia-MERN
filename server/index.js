@@ -10,7 +10,9 @@ import path from "path";
 import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js"; /*route folder for every tpye of feature*/
 import userRoutes from "./routes/users.js";
+import postRoute from "./routes/posts.js";
 import {register} from "./controllers/auth.js";
+import {createPost} from "./controllers/posts.js";
 import { verifyToken } from "./middleware/auth.js";
 
 /** CONFIGURATIONS **/ /* MIDDLEWARE */
@@ -48,10 +50,13 @@ const upload = multer({ storage });
 /* ROUTES WITH FILES */
 /* middleware function where we call before it hits the endpoint (upload.single("picture")) */
 app.post("/auth/register" , upload.single("picture") ,  register);
+/* the picture image will grab the pic property */
+app.post("/posts" , verifyToken , upload.single("picture") , createPost );
 
 /* ROUTES */
 app.use("/auth" , authRoutes);
 app.use("/users" , userRoutes);
+app.use("/posts" , postRoute);
 
 /* SET UP MONGODB */
 const PORT = process.env.PORT || 6001 ;
