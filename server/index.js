@@ -10,6 +10,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import authRoutes from "./routes/auth.js"; /*route folder for every tpye of feature*/
 import {register} from "./controllers/auth.js";
+import { verifyToken } from "./middleware/auth.js";
 
 /** CONFIGURATIONS **/ /* MIDDLEWARE */
 /* To grab file url */
@@ -45,11 +46,10 @@ const upload = multer({ storage });
 
 /* ROUTES WITH FILES */
 /* middleware function where we call before it hits the endpoint (upload.single("picture")) */
-app.post("/auth/register" , upload.single("picture") , register);
+app.post("/auth/register" , upload.single("picture") ,  register);
 
 /* ROUTES */
 app.use("/auth" , authRoutes);
-
 
 /* SET UP MONGODB */
 const PORT = process.env.PORT || 6001 ;
@@ -61,4 +61,3 @@ mongoose.connect(process.env.MONGO_URL , {
 })
 .catch((error) => console.log(`${error} did not connect`));
 
-/* Authentication: reigster and log in ; Authorisation: ensure someone is logged in and perform some actions*/
