@@ -53,3 +53,6 @@ export const authSlice  = createSlice ({
 export const { setMode , setLogin , setLogout , setFriends , setPosts , setPost} = authSlice.actions;
 export default authSlice.reducer;
 // reducer is like an event listener which handles events based on received action (event) type
+// REDUCER: Check to see if the reducer cares about this action
+    /// If so, make a copy of the state, update the copy with new values, and return it
+    /// Otherwise, return the existing state unchanged
