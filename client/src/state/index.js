@@ -1,58 +1,61 @@
-import { createSlice } from "@reduxjs/toolkit";
+import {
+    createSlice
+} from "@reduxjs/toolkit";
 
-/** state that is going to be stored in our gloabl state, can be used in our application anywhere we want */
 const initialState = {
-    mode: "light", 
+    mode: "light",
     user: null,
     token: null,
     posts: [],
-}
-// instead of directly modifying the state, you have to replace the object then modify it
+};
 
-export const authSlice  = createSlice ({
-    // basically functions
+export const authSlice = createSlice({
     name: "auth",
-    initialState, 
+    initialState,
     reducers: {
         setMode: (state) => {
-            state.mode = state.mode === "light" ? "dark" : "light"
-            // state.mode => previous mode
+            state.mode = state.mode === "light" ? "dark" : "light";
         },
         setLogin: (state, action) => {
             state.user = action.payload.user;
             state.token = action.payload.token;
         },
-        // when u logout, we set all these to null (nothing)
         setLogout: (state) => {
             state.user = null;
             state.token = null;
         },
         setFriends: (state, action) => {
-            // check if state.user (user already exists)
-            if (state.user){
+            if (state.user) {
                 state.user.friends = action.payload.friends;
-            }else{
-                console.log("user friends does not exists")
+            } else {
+                console.error("user friends non-existent :(");
             }
         },
         setPosts: (state, action) => {
             state.posts = action.payload.posts;
         },
-        setPost: (state , action) => {
+        setPost: (state, action) => {
             const updatedPosts = state.posts.map((post) => {
-                if (post._id === action.payload.post_id) {
-                    return action.payload.post;
-                } 
+                if (post._id === action.payload.post._id) return action.payload.post;
                 return post;
             });
             state.posts = updatedPosts;
-        }
-    }
-})
+        },
+    },
+});
 
-export const { setMode , setLogin , setLogout , setFriends , setPosts , setPost} = authSlice.actions;
+export const {
+    setMode,
+    setLogin,
+    setLogout,
+    setFriends,
+    setPosts,
+    setPost
+} =
+authSlice.actions;
 export default authSlice.reducer;
+
 // reducer is like an event listener which handles events based on received action (event) type
 // REDUCER: Check to see if the reducer cares about this action
-    /// If so, make a copy of the state, update the copy with new values, and return it
-    /// Otherwise, return the existing state unchanged
+/// If so, make a copy of the state, update the copy with new values, and return it
+/// Otherwise, return the existing state unchanged
